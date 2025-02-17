@@ -48,6 +48,20 @@ class BinaryTree:
                 return node
     def __str__(self):
         return "<{}>".format(self.tuple_from_tree())
+    def __repr__(self):
+        return "{}".format(self.tuple_from_tree())
+    def is_not_none(self, node):
+        return [key for key in node if key is not None]
+
+    def is_bst(self, min_val = float('-inf'), max_val= float('inf') ):
+        if self is None:
+            return True
+        if min_val > self.key or self.key > max_val:
+            return False
+        else:
+            left = BinaryTree.is_bst(self.left, min_val, self.key)
+            right =BinaryTree.is_bst(self.right, self.key, max_val)
+            return left and right
 
 
 def main()->None:
@@ -59,6 +73,7 @@ def main()->None:
     print(f"Height of tree: {tree.height_of_tree()}")
     print(f"Size of tree: {tree.size_of_tree()}")
     print(tree)
+    print(f"Tree is BST ? {tree.is_bst()}")
 
 
 if __name__ =="__main__":
