@@ -62,18 +62,44 @@ class BinaryTree:
             left = BinaryTree.is_bst(self.left, min_val, self.key)
             right =BinaryTree.is_bst(self.right, self.key, max_val)
             return left and right
+    def find_max_and_min(self, min_val =float('inf'), max_val = float('-inf'))-> tuple:
+        if self is None:
+            return min_val, max_val
+        else:
 
+            if self.key < min_val:
+                min_val = self.key
+                min_val, max_val =BinaryTree.find_max_and_min(self.left, min_val, max_val)
+            if self.key > max_val:
+                max_val = self.key
+                min_val , max_val =BinaryTree.find_max_and_min(self.right, min_val, max_val)
+        return min_val, max_val
+    def breadth_first_traversal(self, breadth_first = []):
+        if self is None:
+            return []
+        else:
+            # if self.key not in breadth_first:
+            #     breadth_first.append(self.key)
+            if self.left:
+                breadth_first.append(self.left.key)
+            if self.right:
+                breadth_first.append(self.right.key)
+            BinaryTree.breadth_first_traversal(self.left, breadth_first)
+            BinaryTree.breadth_first_traversal(self.right, breadth_first)
+        return breadth_first
 
 def main()->None:
-    tree_tuple: tuple = ((1,2,None), 5,(7,8,9))
+    tree_tuple: tuple = ((2,3,4), 5,(7,8,9))
     tree: BinaryTree = BinaryTree.binary_tree_from_tuple(tree_tuple)
     print(f"In-order traversal 'Left->Root->Right': {tree.in_order_traversal()}")
     print(f"Post-order traversal 'Left->Right->Root': {tree.post_order_traversal()}")
-    print(f"Pre-order traversal 'Root->Right->Left': {tree.pre_order_traversal()}")
+    print(f"Pre-order traversal 'Root->Left->Right': {tree.pre_order_traversal()}")
     print(f"Height of tree: {tree.height_of_tree()}")
     print(f"Size of tree: {tree.size_of_tree()}")
     print(tree)
     print(f"Tree is BST ? {tree.is_bst()}")
+    print(f"Breadth First traversal: {tree.breadth_first_traversal()}")
+    print(f"Minimum value  is {tree.find_max_and_min()[0]} and maximum value is: {tree.find_max_and_min()[1]}")
 
 
 if __name__ =="__main__":
