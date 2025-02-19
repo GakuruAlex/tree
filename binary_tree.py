@@ -66,10 +66,15 @@ class BinaryTree:
     def find_max_and_min(self, min_val =float('inf'), max_val = float('-inf'))-> tuple:
         if self is None:
             return min_val, max_val
-        max_val = max(self.key, max_val)
-        min_val = min(self.key, min_val)
-        min_val, max_val =BinaryTree.find_max_and_min(self.left, min_val, max_val)
-        min_val , max_val =BinaryTree.find_max_and_min(self.right, min_val, max_val)
+        queue = deque([self])
+        while queue:
+            current_node = queue.popleft()
+            max_val = max(current_node.key, max_val)
+            min_val = min(current_node.key, min_val)
+            if current_node.left:
+                queue.append(current_node.left)
+            if current_node.right:
+                queue.append(current_node.right)
         return min_val, max_val
     def breadth_first_traversal(self):
         breadth_first = []
