@@ -1,3 +1,4 @@
+from collections import deque
 class BinaryTree:
     def __init__(self, key):
         self.key = key
@@ -8,6 +9,7 @@ class BinaryTree:
                 return []
             else:
                 return (BinaryTree.in_order_traversal(self.left) + [self.key] + BinaryTree.in_order_traversal(self.right))
+
     def pre_order_traversal(self)-> list:
         if self is None:
             return []
@@ -65,27 +67,29 @@ class BinaryTree:
     def find_max_and_min(self, min_val =float('inf'), max_val = float('-inf'))-> tuple:
         if self is None:
             return min_val, max_val
-        else:
-
-            if self.key < min_val:
-                min_val = self.key
-                min_val, max_val =BinaryTree.find_max_and_min(self.left, min_val, max_val)
-            if self.key > max_val:
-                max_val = self.key
-                min_val , max_val =BinaryTree.find_max_and_min(self.right, min_val, max_val)
+        queue = deque([self])
+        while queue:
+            current_node = queue.popleft()
+            max_val = max(current_node.key, max_val)
+            min_val = min(current_node.key, min_val)
+            if current_node.left:
+                queue.append(current_node.left)
+            if current_node.right:
+                queue.append(current_node.right)
         return min_val, max_val
-    def breadth_first_traversal(self, breadth_first = []):
-        if self is None:
+    def breadth_first_traversal(self):
+        breadth_first = []
+        if not self:
             return []
-        else:
-            # if self.key not in breadth_first:
-            #     breadth_first.append(self.key)
-            if self.left:
-                breadth_first.append(self.left.key)
-            if self.right:
-                breadth_first.append(self.right.key)
-            BinaryTree.breadth_first_traversal(self.left, breadth_first)
-            BinaryTree.breadth_first_traversal(self.right, breadth_first)
+        stack = deque([self])
+
+        while stack:
+            current_node = stack.pop()
+            breadth_first.append(current_node.key)
+            if current_node.left:
+                stack.append(current_node.left)
+            if current_node.right:
+                stack.append(current_node.right)
         return breadth_first
 
 def main()->None:
