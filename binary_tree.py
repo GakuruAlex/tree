@@ -9,6 +9,7 @@ class BinaryTree:
                 return []
             else:
                 return (BinaryTree.in_order_traversal(self.left) + [self.key] + BinaryTree.in_order_traversal(self.right))
+
     def pre_order_traversal(self)-> list:
         if self is None:
             return []
@@ -83,7 +84,7 @@ class BinaryTree:
         stack = deque([self])
 
         while stack:
-            current_node = stack.popleft()
+            current_node = stack.pop()
             breadth_first.append(current_node.key)
             if current_node.left:
                 stack.append(current_node.left)
